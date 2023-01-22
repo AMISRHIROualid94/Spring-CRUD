@@ -3,19 +3,19 @@ package com.springframework.springcrud.controller;
 import com.springframework.springcrud.models.User;
 import com.springframework.springcrud.repositories.UserRepository;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @Controller
 public class myController {
 
     private final UserRepository userRepository;
-
-    public myController(UserRepository userRepository) {
+    private final PasswordEncoder passwordEncoder;
+    public myController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -31,8 +31,8 @@ public class myController {
 
     @PostMapping("/register")
     public String NewUser(User user){
-        userRepository.save(user.toUser());
-        return "redirect:/";
+        userRepository.save(user.toUser(passwordEncoder));
+        return "redirect:/login";
     }
 
     @GetMapping("/users")
@@ -55,7 +55,7 @@ public class myController {
 
     @PostMapping("/update")
     public String UpdateUser(User user){
-       User newUser = user.toUser();
+       User newUser = user.toUser(passwordEncoder);
        User lastUser = userRepository.findUserById(newUser.getId());
        lastUser.setUsername(newUser.getUsername());
        lastUser.setPassword(newUser.getPassword());
@@ -65,4 +65,13 @@ public class myController {
         return "redirect:/users";
     }
 
+    @RequestMapping("/login")
+    public String login(){
+        return "loginPage";
+    }
+
+    @GetMapping("/welcome")
+    public String WelcomePage(){
+        return "welcome";
+    }
 }
