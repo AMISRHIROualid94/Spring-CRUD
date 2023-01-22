@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <title>Update User</title>
 </head>
+<style>
+  #userid{
+    display: none;
+  }
+</style>
 <body>
+
   <h1 th:text="'Update User'"></h1>
   <form th:action="@{/update}" method="post">
+    <input type="hidden" name="username" id="userid" th:field="${usertoupdate.id}"/><br>
     <label>Username :</label><br>
     <input type="text" placeholder="Username" name="username" th:field="${usertoupdate.username}"/><br>
     <label>Password :</label><br>

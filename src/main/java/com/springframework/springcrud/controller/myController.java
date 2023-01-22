@@ -54,12 +54,15 @@ public class myController {
     }
 
     @PostMapping("/update")
-    public void UpdateUser(User user){
-        User updateUser = user.toUser();
-        User newUser = userRepository.findUserById(updateUser.getId());
-
-        System.out.println("to update user id : "+ newUser);
-
+    public String UpdateUser(User user){
+       User newUser = user.toUser();
+       User lastUser = userRepository.findUserById(newUser.getId());
+       lastUser.setUsername(newUser.getUsername());
+       lastUser.setPassword(newUser.getPassword());
+       lastUser.setEmail(newUser.getEmail());
+       lastUser.setFullName(newUser.getFullName());
+       userRepository.save(lastUser);
+        return "redirect:/users";
     }
 
 }
