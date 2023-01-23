@@ -53,6 +53,8 @@ public class SecurityConfig {
                 .passwordParameter("password")
                 .defaultSuccessUrl("/welcome",true)
                 .and()
+                .csrf()
+                .disable()
                 .build();
     }
 

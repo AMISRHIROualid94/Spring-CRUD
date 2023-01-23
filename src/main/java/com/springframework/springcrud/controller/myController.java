@@ -6,6 +6,7 @@ import com.springframework.springcrud.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -55,13 +56,14 @@ public class myController {
 
     @PostMapping("/update")
     public String UpdateUser(User user){
-       User newUser = user.toUser(passwordEncoder);
+        user.setId(user.getId());
+       /*User newUser = user.toUser(passwordEncoder);
        User lastUser = userRepository.findUserById(newUser.getId());
        lastUser.setUsername(newUser.getUsername());
        lastUser.setPassword(newUser.getPassword());
        lastUser.setEmail(newUser.getEmail());
-       lastUser.setFullName(newUser.getFullName());
-       userRepository.save(lastUser);
+       lastUser.setFullName(newUser.getFullName());*/
+       userRepository.save(user.toUser(passwordEncoder));
         return "redirect:/users";
     }
 
